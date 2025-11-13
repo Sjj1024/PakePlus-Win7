@@ -24,8 +24,8 @@
         "electron-builder": "^24.9.1"
     },
     "build": {
-        "appId": "com.pakeplus.app",
-        "productName": "PakePlus",
+        "appId": "com.pakeplus.win7",
+        "productName": "PakePlus-Win7",
         "directories": {
             "output": "dist"
         },
