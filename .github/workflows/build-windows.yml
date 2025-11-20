@@ -1,0 +1,113 @@
+name: Build Windows
+
+on:
+    push:
+        tags:
+            - 'v*'
+    workflow_dispatch:
+        inputs:
+            version:
+                description: '版本号 (例如: 1.0.0)'
+                required: false
+                default: ''
+
+jobs:
+    build-windows:
+        runs-on: windows-latest
+
+        strategy:
+            matrix:
+                arch: [ia32, x64]
+
+        steps:
+            - name: 检出代码
+              uses: actions/checkout@v4
+
+            - name: 设置 Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '18'
+                  cache: 'npm'
+
+            - name: 安装依赖
+              run: npm ci
+
+            - name: 获取版本号
+              id: version
+              run: |
+                  if ("${{ github.event_name }}" -eq "workflow_dispatch" -and "${{ github.event.inputs.version }}" -ne "") {
+                    echo "version=${{ github.event.inputs.version }}" >> $env:GITHUB_OUTPUT
+                  } else {
+                    $packageJson = Get-Content package.json | ConvertFrom-Json
+                    echo "version=$($packageJson.version)" >> $env:GITHUB_OUTPUT
+                  }
+              shell: pwsh
+
+            - name: 构建 Windows (${{ matrix.arch }})
+              run: npm run build:win -- --${{ matrix.arch }}
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: 上传构建产物
+              uses: actions/upload-artifact@v4
+              with:
+                  name: windows-${{ matrix.arch }}
+                  path: dist/*.exe
+                  retention-days: 30
+
+    release:
+        needs: build-windows
+        runs-on: ubuntu-latest
+        if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
+
+        steps:
+            - name: 检出代码
+              uses: actions/checkout@v4
+
+            - name: 获取版本号
+              id: version
+              run: |
+                  if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ -n "${{ github.event.inputs.version }}" ]; then
+                    echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+                  else
+                    VERSION=$(node -p "require('./package.json').version")
+                    echo "version=$VERSION" >> $GITHUB_OUTPUT
+                  fi
+
+            - name: 下载所有构建产物
+              uses: actions/download-artifact@v4
+              with:
+                  path: artifacts
+                  pattern: windows-*
+                  merge-multiple: false
+
+            - name: 创建 Release
+              uses: softprops/action-gh-release@v1
+              with:
+                  tag_name: v${{ steps.version.outputs.version }}
+                  name: Release v${{ steps.version.outputs.version }}
+                  body: |
+                      ## Windows 版本发布 v${{ steps.version.outputs.version }}
+
+                      ### 安装程序 (NSIS)
+                      - **32位**: `PakePlus-Win7-${{ steps.version.outputs.version }}-ia32-setup.exe`
+                      - **64位**: `PakePlus-Win7-${{ steps.version.outputs.version }}-x64-setup.exe`
+
+                      ### 便携版
+                      - **32位**: `PakePlus-Win7-${{ steps.version.outputs.version }}-ia32.exe`
+                      - **64位**: `PakePlus-Win7-${{ steps.version.outputs.version }}-x64.exe`
+
+                      ### 安装说明
+                      1. **安装程序**: 下载对应架构的 setup.exe 文件，运行后按照向导完成安装
+                      2. **便携版**: 下载对应架构的 .exe 文件，可直接运行，无需安装
+
+                      ### 系统要求
+                      - Windows 7 或更高版本
+                      - 32位或64位系统（请选择对应架构的版本）
+                  files: |
+                      artifacts/windows-ia32/**/*
+                      artifacts/windows-x64/**/*
+                  draft: false
+                  prerelease: false
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
