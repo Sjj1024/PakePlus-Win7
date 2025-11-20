@@ -11,6 +11,9 @@ on:
                 required: false
                 default: ''
 
+permissions:
+    contents: write
+
 jobs:
     build-windows:
         runs-on: windows-latest
@@ -48,6 +51,10 @@ jobs:
               env:
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+            - name: 列出构建产物
+              run: dir dist /B
+              shell: cmd
+
             - name: 上传构建产物
               uses: actions/upload-artifact@v4
               with:
@@ -59,6 +66,9 @@ jobs:
         needs: build-windows
         runs-on: ubuntu-latest
         if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
+
+        permissions:
+            contents: write
 
         steps:
             - name: 检出代码
@@ -79,7 +89,46 @@ jobs:
               with:
                   path: artifacts
                   pattern: windows-*
-                  merge-multiple: false
+                  merge-multiple: true
+
+            - name: 列出下载的文件结构
+              run: |
+                  echo "=== 文件结构 ==="
+                  find artifacts -type f -name "*.exe" | sort
+                  echo "=== 文件详情 ==="
+                  ls -la artifacts/
+                  if [ -d "artifacts/windows-ia32" ]; then
+                    echo "=== windows-ia32 目录 ==="
+                    ls -la artifacts/windows-ia32/
+                  fi
+                  if [ -d "artifacts/windows-x64" ]; then
+                    echo "=== windows-x64 目录 ==="
+                    ls -la artifacts/windows-x64/
+                  fi
+
+            - name: 重命名文件（修复版本号）
+              run: |
+                  # 查找所有 .exe 文件并重命名错误的版本号
+                  for file in artifacts/*.exe; do
+                    if [ -f "$file" ]; then
+                      # 将 1.0.0 替换为正确的版本号
+                      new_file=$(echo "$file" | sed "s/1\.0\.0/${{ steps.version.outputs.version }}/g")
+                      if [ "$file" != "$new_file" ]; then
+                        mv "$file" "$new_file"
+                        echo "重命名: $file -> $new_file"
+                      fi
+                    fi
+                  done
+
+                  # 处理子目录中的文件
+                  find artifacts -name "*.exe" -type f | while read file; do
+                    # 将 1.0.0 替换为正确的版本号
+                    new_file=$(echo "$file" | sed "s/1\.0\.0/${{ steps.version.outputs.version }}/g")
+                    if [ "$file" != "$new_file" ]; then
+                      mv "$file" "$new_file"
+                      echo "重命名: $file -> $new_file"
+                    fi
+                  done
 
             - name: 创建 Release
               uses: softprops/action-gh-release@v1
@@ -89,25 +138,16 @@ jobs:
                   body: |
                       ## Windows 版本发布 v${{ steps.version.outputs.version }}
 
-                      ### 安装程序 (NSIS)
-                      - **32位**: `PakePlus-Win7-${{ steps.version.outputs.version }}-ia32-setup.exe`
-                      - **64位**: `PakePlus-Win7-${{ steps.version.outputs.version }}-x64-setup.exe`
+                      自动构建的 Windows 版本，包含 32位 和 64位 架构。
 
-                      ### 便携版
-                      - **32位**: `PakePlus-Win7-${{ steps.version.outputs.version }}-ia32.exe`
-                      - **64位**: `PakePlus-Win7-${{ steps.version.outputs.version }}-x64.exe`
-
-                      ### 安装说明
-                      1. **安装程序**: 下载对应架构的 setup.exe 文件，运行后按照向导完成安装
-                      2. **便携版**: 下载对应架构的 .exe 文件，可直接运行，无需安装
+                      ### 文件说明
+                      - `*setup.exe`: 安装程序版本
+                      - `*.exe` (非setup): 便携版本
 
                       ### 系统要求
                       - Windows 7 或更高版本
-                      - 32位或64位系统（请选择对应架构的版本）
+                      - 请根据您的系统架构选择对应的版本
                   files: |
-                      artifacts/windows-ia32/**/*
-                      artifacts/windows-x64/**/*
+                      artifacts/**/*.exe
                   draft: false
                   prerelease: false
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
