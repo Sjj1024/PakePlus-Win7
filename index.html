@@ -14,7 +14,7 @@
                 height: 40px;
                 background: #f0f0f0;
                 display: flex;
-                padding-left: 10px;
+                /* padding-left: 10px; */
             }
             .tab.active {
                 background: white;
@@ -38,6 +38,7 @@
             }
             .tab {
                 /* 启用 flex 布局来对齐标题和关闭按钮 */
+                position: relative;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
@@ -46,15 +47,26 @@
                 cursor: pointer;
                 border-right: 1px solid #ccc;
                 background: #e0e0e0;
+                max-width: 100px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .active .close-btn {
+                display: block;
             }
             .close-btn {
-                margin-left: 10px;
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                margin: auto;
                 font-weight: bold;
                 cursor: pointer;
                 padding: 0 5px;
                 height: 100%; /* 让按钮与标签页高度一致 */
                 line-height: 40px; /* 垂直居中 'x' */
-                transition: background 0.1s;
+                display: none;
             }
             .close-btn:hover {
                 background: #ccc;
@@ -63,9 +75,9 @@
     </head>
     <body>
         <div id="tab-bar">
-            <button id="new-tab-btn" onclick="addNewTab('https://juejin.cn/')">
+            <!-- <button id="new-tab-btn" onclick="addNewTab('https://juejin.cn/')">
                 +
-            </button>
+            </button> -->
         </div>
         <div id="tab-content"></div>
         <script src="renderer.js"></script>

@@ -79,7 +79,7 @@ function activateTab(targetId) {
 }
 
 // 初始创建一个默认标签页
-addNewTab('https://www.csdn.net')
+addNewTab('https://juejin.cn/')
 
 // renderer.js (接着上面的代码)
 
