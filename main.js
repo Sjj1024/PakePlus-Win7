@@ -2,8 +2,6 @@ const { app, BrowserWindow, Menu } = require('electron')
 const path = require('path')
 const config = require('./config')
 
-const WEBSITE_URL = config.websiteUrl
-
 let mainWindow
 
 function createWindow() {
@@ -17,6 +15,7 @@ function createWindow() {
             nodeIntegration: false,
             contextIsolation: true,
             webSecurity: true,
+            webviewTag: true,
         },
         // Windows 7 兼容性设置
         show: false,
@@ -24,7 +23,7 @@ function createWindow() {
     })
 
     // 加载网站
-    mainWindow.loadURL(WEBSITE_URL)
+    mainWindow.loadFile('index.html')
 
     // 窗口准备好后显示
     mainWindow.once('ready-to-show', () => {
@@ -41,11 +40,12 @@ function createWindow() {
         mainWindow = null
     })
 
-    // 处理外部链接
-    mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-        require('electron').shell.openExternal(url)
-        return { action: 'deny' }
-    })
+    // // 处理外部链接
+    // mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    //     console.log('url---', url)
+    //     require('electron').shell.openExternal(url)
+    //     return { action: 'deny' }
+    // })
 }
 
 // 创建应用菜单

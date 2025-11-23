@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="node_modules/electron-tabs/dist/electron-tabs.js"></script>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+        </style>
+    </head>
+    <body>
+        <tab-group sortable="true"></tab-group>
+
+        <script>
+            // Select tab-group
+            const tabGroup = document.querySelector('tab-group')
+            // Do stuff
+            const tab = tabGroup.addTab({
+                title: 'PakePlus',
+                src: 'https://www.npmjs.com/package/electron-tabs',
+            })
+            const pos = tab.getPosition()
+            console.log('Tab position is ' + pos)
+            // 激活默认的第一个
+            tab.activate()
+        </script>
+    </body>
+</html>
