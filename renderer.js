@@ -14,7 +14,7 @@ function addNewTab(url) {
     console.log('addNewTab-----', url)
     tabIdCounter++
     const tabId = `tab-${tabIdCounter}`
-
+    console.log('tabId-----', tabId)
     // 1. 创建标签页元素容器
     const tabEl = document.createElement('div')
     tabEl.className = 'tab'
@@ -49,7 +49,7 @@ function addNewTab(url) {
     webview.className = 'tab-webview'
     webview.id = tabId
     webview.src = url
-    webview.allowpopups = 'on'
+    webview.setAttribute('allowpopups', 'on')
 
     // 关键：监听 webview 事件
     setupWebviewListeners(webview, titleSpan) // 注意：现在传入的是 titleSpan
@@ -79,7 +79,7 @@ function activateTab(targetId) {
 }
 
 // 初始创建一个默认标签页
-addNewTab('https://juejin.cn/')
+addNewTab('https://www.csdn.net')
 
 // renderer.js (接着上面的代码)
 
@@ -91,10 +91,10 @@ addNewTab('https://juejin.cn/')
 function setupWebviewListeners(webview, tabEl) {
     // 监听页面请求新窗口事件 (例如：target="_blank" 的链接)
     webview.addEventListener('new-window', (e) => {
-        e.preventDefault()
-        console.log('new-window----', e.url)
+        // e.preventDefault()
+        console.log('new-window----', e)
         // 在新标签页中打开新窗口的 URL
-        addNewTab(e.url)
+        addNewTab(e.detail.url)
     })
 
     // 监听页面加载完成，获取标题

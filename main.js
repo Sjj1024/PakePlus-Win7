@@ -11,12 +11,21 @@ function createWindow() {
             // 启用 nodeIntegration 以便在渲染进程中使用 require
             nodeIntegration: true,
             // 确保 contextIsolation 为 false，以便 webview 正常工作
-            contextIsolation: false,
+            contextIsolation: true,
             // 启用 webview 标签
             webviewTag: true,
             webSecurity: false,
             preload: path.join(__dirname, 'preload.js'),
         },
+    })
+
+    mainWindow.webContents.on('did-attach-webview', (event, wc) => {
+        console.log('did-attach-webview-----', wc)
+        wc.setWindowOpenHandler((details) => {
+            console.log('setWindowOpenHandler-----', details)
+            mainWindow.webContents.send('webview-new-window', wc.id, details)
+            return { action: 'deny' }
+        })
     })
 
     mainWindow.loadFile('index.html')
