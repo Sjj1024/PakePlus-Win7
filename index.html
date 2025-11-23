@@ -1,33 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
-        <script src="node_modules/electron-tabs/dist/electron-tabs.js"></script>
+        <title>Electron Tab Browser</title>
         <style>
-            * {
+            /* 简单 CSS 样式 */
+            body {
                 margin: 0;
-                padding: 0;
-                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+            }
+            #tab-bar {
+                height: 40px;
+                background: #f0f0f0;
+                display: flex;
+                padding-left: 10px;
+            }
+            .tab.active {
+                background: white;
+                border-bottom: none;
+            }
+            #tab-content {
+                flex-grow: 1;
+                position: relative;
+            }
+            .tab-webview {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                /* 隐藏非激活的 webview */
+                display: none;
+            }
+            .tab-webview.active {
+                display: flex;
+            }
+            .tab {
+                /* 启用 flex 布局来对齐标题和关闭按钮 */
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0 5px 0 15px; /* 调整内边距以适应按钮 */
+                line-height: 40px;
+                cursor: pointer;
+                border-right: 1px solid #ccc;
+                background: #e0e0e0;
+            }
+            .close-btn {
+                margin-left: 10px;
+                font-weight: bold;
+                cursor: pointer;
+                padding: 0 5px;
+                height: 100%; /* 让按钮与标签页高度一致 */
+                line-height: 40px; /* 垂直居中 'x' */
+                transition: background 0.1s;
+            }
+            .close-btn:hover {
+                background: #ccc;
             }
         </style>
     </head>
     <body>
-        <tab-group sortable="true"></tab-group>
-
-        <script>
-            // Select tab-group
-            const tabGroup = document.querySelector('tab-group')
-            // Do stuff
-            const tab = tabGroup.addTab({
-                title: 'PakePlus',
-                src: 'https://www.npmjs.com/package/electron-tabs',
-            })
-            const pos = tab.getPosition()
-            console.log('Tab position is ' + pos)
-            // 激活默认的第一个
-            tab.activate()
-        </script>
+        <div id="tab-bar">
+            <button id="new-tab-btn" onclick="addNewTab('https://juejin.cn/')">
+                +
+            </button>
+        </div>
+        <div id="tab-content"></div>
+        <script src="renderer.js"></script>
     </body>
 </html>
