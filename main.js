@@ -42,11 +42,15 @@ function createWindow() {
     //     mainWindow.setFullScreen(true)
     // })
 
+    // 监听 webview 标签的加载完成事件
     mainWindow.webContents.on('did-attach-webview', (event, wc) => {
         console.log('did-attach-webview-----', wc)
+        // 监听 webview 标签的窗口打开事件
         wc.setWindowOpenHandler((details) => {
             console.log('setWindowOpenHandler-----', details)
+            // 发送事件到渲染进程
             mainWindow.webContents.send('webview-new-window', wc.id, details)
+            // 阻止窗口打开
             return { action: 'deny' }
         })
     })
