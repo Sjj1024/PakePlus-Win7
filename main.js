@@ -1,10 +1,12 @@
 // main.js
 
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, Menu } = require('electron')
 const path = require('path')
 
+let mainWindow = null
+
 function createWindow() {
-    const mainWindow = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         width: 1200,
         height: 800,
         minimizable: false, // 禁用最小化按钮
@@ -59,7 +61,60 @@ function createWindow() {
     // mainWindow.webContents.openDevTools(); // 开发调试用
 }
 
-app.whenReady().then(createWindow)
+// 创建应用菜单
+function createMenu() {
+    const template = [
+        {
+            label: '文件',
+            submenu: [
+                {
+                    label: '刷新',
+                    accelerator: 'CmdOrCtrl+R',
+                    click: () => {
+                        if (mainWindow) {
+                            mainWindow.reload()
+                        }
+                    },
+                },
+                {
+                    label: '强制刷新',
+                    accelerator: 'CmdOrCtrl+Shift+R',
+                    click: () => {
+                        if (mainWindow) {
+                            mainWindow.webContents.reloadIgnoringCache()
+                        }
+                    },
+                },
+                { type: 'separator' },
+                {
+                    label: '退出',
+                    accelerator:
+                        process.platform === 'darwin' ? 'Cmd+Q' : 'Ctrl+Q',
+                    click: () => {
+                        app.quit()
+                    },
+                },
+            ],
+        },
+        {
+            label: '刷新',
+            accelerator: 'CmdOrCtrl+R',
+            click: () => {
+                if (mainWindow) {
+                    mainWindow.reload()
+                }
+            },
+        },
+    ]
+
+    const menu = Menu.buildFromTemplate(template)
+    Menu.setApplicationMenu(menu)
+}
+
+app.whenReady().then(() => {
+    createWindow()
+    createMenu()
+})
 
 // 阻止应用退出（可选，如果需要完全阻止退出）
 // app.on('before-quit', (event) => {
