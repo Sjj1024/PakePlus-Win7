@@ -1,12 +1,6 @@
 // main.js
 
-const {
-    app,
-    BrowserWindow,
-    Menu,
-    ipcMain,
-    globalShortcut,
-} = require('electron')
+const { app, BrowserWindow, Menu, ipcMain } = require('electron')
 const path = require('path')
 
 let mainWindow = null
