@@ -24,12 +24,10 @@ function showPasswordDialog() {
         parent: mainWindow,
         minimizable: false,
         closable: true,
-        resizable: false,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
         },
-        frame: true,
         autoHideMenuBar: true,
     })
 

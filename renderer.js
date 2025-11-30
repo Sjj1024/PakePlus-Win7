@@ -150,7 +150,7 @@ function setupWebviewListeners(webview, tabEl) {
     // 监听页面导航，更新标签标题
     webview.addEventListener('page-title-updated', (e) => {
         console.log('page-title-updated-----', e.title)
-        tabEl.textContent = e.title.substring(0, 4) + '...' // 截断标题，防止过长
+        tabEl.textContent = e.title.substring(0, 6) + '...' // 截断标题，防止过长
     })
 
     // 添加右键菜单
