@@ -1,12 +1,70 @@
 // main.js
 
-const { app, BrowserWindow, Menu, ipcMain } = require('electron')
+const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron')
 const path = require('path')
 
 let mainWindow = null
+let passwordWindow = null
+
+// 设置退出密码（可以后续改为从配置文件读取）
+const EXIT_PASSWORD = '123456' // 默认密码，建议后续改为从配置文件读取
+
+// 显示密码输入窗口
+function showPasswordDialog() {
+    if (passwordWindow) {
+        passwordWindow.focus()
+        return
+    }
+
+    passwordWindow = new BrowserWindow({
+        width: 450,
+        height: 260,
+        resizable: false,
+        modal: true,
+        parent: mainWindow,
+        minimizable: false,
+        closable: true,
+        resizable: false,
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false,
+        },
+        frame: true,
+        autoHideMenuBar: true,
+    })
+
+    passwordWindow.loadFile('password-dialog.html')
+
+    passwordWindow.on('closed', () => {
+        passwordWindow = null
+    })
+}
+
+// 验证密码并退出
+function verifyPasswordAndQuit(password) {
+    if (password === EXIT_PASSWORD) {
+        // 密码正确，关闭密码窗口并退出应用
+        if (passwordWindow) {
+            passwordWindow.close()
+        }
+        app.quit()
+    } else {
+        // 密码错误，通知渲染进程显示错误
+        if (passwordWindow) {
+            passwordWindow.webContents.send('password-verify-result', false)
+        }
+    }
+}
 
 // 创建右键菜单
-let contextMenu = Menu.buildFromTemplate([{ label: '退出', role: 'quit' }])
+let contextMenu = Menu.buildFromTemplate([
+    {
+        label: '退出',
+        click: () => {
+            showPasswordDialog()
+        },
+    },
+])
 
 function createWindow() {
     mainWindow = new BrowserWindow({
@@ -74,6 +132,26 @@ ipcMain.on('context-menu', (e, params) => {
     contextMenu.popup()
 })
 
+// 监听密码验证请求
+ipcMain.on('verify-password', (event, password) => {
+    verifyPasswordAndQuit(password)
+})
+
+// 监听密码对话框取消
+ipcMain.on('password-dialog-cancel', () => {
+    if (passwordWindow) {
+        passwordWindow.close()
+    }
+})
+
+// 监听密码验证成功（备用，如果前端需要）
+ipcMain.on('password-verified', () => {
+    if (passwordWindow) {
+        passwordWindow.close()
+    }
+    app.quit()
+})
+
 // 创建应用菜单
 function createMenu() {
     const template = [
@@ -108,7 +186,7 @@ function createMenu() {
             label: '退出',
             accelerator: process.platform === 'darwin' ? 'Cmd+Q' : 'Ctrl+Q',
             click: () => {
-                app.quit()
+                showPasswordDialog()
             },
         },
     ]
