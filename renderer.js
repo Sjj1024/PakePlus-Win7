@@ -38,7 +38,10 @@ function addNewTab(url) {
 
     // 将标题和关闭按钮添加到标签页元素中
     tabEl.appendChild(titleSpan)
-    tabEl.appendChild(closeBtn)
+    // 第一个tab不显示关闭按钮
+    if (tabIdCounter > 1) {
+        tabEl.appendChild(closeBtn)
+    }
 
     tabBar.insertBefore(tabEl, document.getElementById('new-tab-btn'))
 
