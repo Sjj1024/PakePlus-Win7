@@ -78,7 +78,8 @@ function createMenu() {
             accelerator: 'CmdOrCtrl+R',
             click: () => {
                 if (mainWindow) {
-                    mainWindow.reload()
+                    // 发送事件到渲染进程，刷新当前激活的webview
+                    mainWindow.webContents.send('webview-reload')
                 }
             },
         },

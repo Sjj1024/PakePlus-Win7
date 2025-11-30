@@ -103,6 +103,26 @@ document.addEventListener('webview-home', () => {
     }
 })
 
+// 监听刷新事件（从菜单栏触发）
+document.addEventListener('webview-reload', () => {
+    console.log('webview-reload event received')
+    // 找到当前激活的标签页
+    const activeTab = document.querySelector('.tab.active')
+    if (activeTab) {
+        // 从header ID获取webview ID (例如: "header-tab-1" -> "tab-1")
+        const targetId = activeTab.id.replace('header-', '')
+        const webviewEl = document.getElementById(targetId)
+        if (webviewEl) {
+            // 刷新当前webview
+            webviewEl.reload()
+        } else {
+            console.log('webviewEl not found-----')
+        }
+    } else {
+        console.log('activeTab not found-----')
+    }
+})
+
 // renderer.js (接着上面的代码)
 
 /**

@@ -32,3 +32,10 @@ ipcRenderer.on('webview-home', () => {
     const newEvent = new CustomEvent('webview-home')
     document.dispatchEvent(newEvent)
 })
+
+ipcRenderer.on('webview-reload', () => {
+    console.log('webview-reload-----222')
+    // 发送全局事件到document，让renderer.js处理
+    const newEvent = new CustomEvent('webview-reload')
+    document.dispatchEvent(newEvent)
+})
