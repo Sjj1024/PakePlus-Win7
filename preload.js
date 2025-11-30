@@ -28,9 +28,7 @@ ipcRenderer.on('webview-new-window', (e, webContentsId, details) => {
 
 ipcRenderer.on('webview-home', () => {
     console.log('webview-home-----222')
+    // 发送全局事件到document，让renderer.js处理
     const newEvent = new CustomEvent('webview-home')
-    document
-        .querySelector('.tab.active')
-        ?.querySelector('webview')
-        ?.dispatchEvent(newEvent)
+    document.dispatchEvent(newEvent)
 })

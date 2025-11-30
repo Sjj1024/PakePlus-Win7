@@ -78,8 +78,30 @@ function activateTab(targetId) {
     document.getElementById(targetId).classList.add('active')
 }
 
+// 定义默认主页URL
+const DEFAULT_HOME_URL = 'https://juejin.cn/'
+
 // 初始创建一个默认标签页
-addNewTab('https://juejin.cn/')
+addNewTab(DEFAULT_HOME_URL)
+
+// 监听主页事件（从菜单栏触发）
+document.addEventListener('webview-home', () => {
+    console.log('webview-home event received')
+    // 找到当前激活的标签页
+    const activeTab = document.querySelector('.tab.active')
+    if (activeTab) {
+        // 从header ID获取webview ID (例如: "header-tab-1" -> "tab-1")
+        const targetId = activeTab.id.replace('header-', '')
+        const webviewEl = document.getElementById(targetId)
+        if (webviewEl) {
+            webviewEl.src = DEFAULT_HOME_URL
+        } else {
+            console.log('webviewEl not found-----')
+        }
+    } else {
+        console.log('activeTab not found-----')
+    }
+})
 
 // renderer.js (接着上面的代码)
 
@@ -95,24 +117,6 @@ function setupWebviewListeners(webview, tabEl) {
         console.log('new-window----', e)
         // 在新标签页中打开新窗口的 URL
         addNewTab(e.detail.url)
-    })
-
-    webview.addEventListener('webview-home', () => {
-        console.log('webview-home-----111')
-        // 当前激活的标签页加载主页
-        const activeTab = document.querySelector('.tab.active')
-        if (activeTab) {
-            // 找到当前激活的标签页的 webview
-            const targetId = activeTab.id.replace('header-', '')
-            const webviewEl = document.getElementById(targetId)
-            if (webviewEl) {
-                webviewEl.src = 'https://www.csdn.net/'
-            } else {
-                console.log('webviewEl not found-----')
-            }
-        } else {
-            console.log('activeTab not found-----')
-        }
     })
 
     // 监听页面加载完成，获取标题
