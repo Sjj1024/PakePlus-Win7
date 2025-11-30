@@ -12,6 +12,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
         chrome: process.versions.chrome,
         electron: process.versions.electron,
     },
+    send: (channel, data) => {
+        ipcRenderer.send(channel, data)
+    },
 })
 
 // 页面加载完成后的初始化

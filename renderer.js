@@ -1,5 +1,4 @@
 // renderer.js
-
 const tabBar = document.getElementById('tab-bar')
 const tabContent = document.getElementById('tab-content')
 let tabIdCounter = 0
@@ -148,7 +147,16 @@ function setupWebviewListeners(webview, tabEl) {
     // 监听页面导航，更新标签标题
     webview.addEventListener('page-title-updated', (e) => {
         console.log('page-title-updated-----', e.title)
-        tabEl.textContent = e.title.substring(0, 10) + '...' // 截断标题，防止过长
+        tabEl.textContent = e.title.substring(0, 3) + '...' // 截断标题，防止过长
+    })
+
+    // 添加右键菜单
+    webview.addEventListener('context-menu', (e) => {
+        console.log('context-menu-----', e)
+        // 发送事件到主进程
+        window.electronAPI.send('context-menu', e)
+        // 阻止默认右键菜单
+        e.preventDefault()
     })
 }
 

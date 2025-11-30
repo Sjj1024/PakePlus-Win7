@@ -1,9 +1,15 @@
 // main.js
 
-const { app, BrowserWindow, Menu } = require('electron')
+const { app, BrowserWindow, Menu, ipcMain } = require('electron')
 const path = require('path')
 
 let mainWindow = null
+
+// 创建右键菜单
+let contextMenu = Menu.buildFromTemplate([
+    { label: 'Item 1', role: 'reload' },
+    { role: 'editMenu' },
+])
 
 function createWindow() {
     mainWindow = new BrowserWindow({
@@ -57,9 +63,18 @@ function createWindow() {
         })
     })
 
+    mainWindow.webContents.on('context-menu', (e, params) => {
+        contextMenu.popup()
+    })
+
     mainWindow.loadFile('index.html')
     // mainWindow.webContents.openDevTools(); // 开发调试用
 }
+
+// 监听右键菜单事件
+ipcMain.on('context-menu', (e, params) => {
+    contextMenu.popup()
+})
 
 // 创建应用菜单
 function createMenu() {
