@@ -42,3 +42,34 @@ ipcRenderer.on('webview-reload', () => {
     const newEvent = new CustomEvent('webview-reload')
     document.dispatchEvent(newEvent)
 })
+
+ipcRenderer.on('exit-app', () => {
+    console.log('exit-app-----222')
+    document.getElementById('password-dialog').style.display = 'flex'
+    document.getElementById('password-input').value = ''
+    document.getElementById('error-message').style.display = 'none'
+    document.getElementById('password-input').focus()
+    document
+        .getElementById('password-input')
+        .addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('password-confirm-btn').click()
+            }
+        })
+    document
+        .getElementById('password-confirm-btn')
+        .addEventListener('click', () => {
+            const password = document.getElementById('password-input').value
+            ipcRenderer.send('verify-password', password)
+        })
+    document
+        .getElementById('password-cancel-btn')
+        .addEventListener('click', () => {
+            document.getElementById('password-dialog').style.display = 'none'
+        })
+})
+
+ipcRenderer.on('password-verify-error', (e, error) => {
+    console.log('password-verify-error-----', error)
+    document.getElementById('error-message').style.display = 'block'
+})

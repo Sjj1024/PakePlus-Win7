@@ -76,6 +76,94 @@
             .close-btn:hover {
                 background: #ccc;
             }
+            /* 密码输入框样式 */
+            #password-dialog {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1000;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .passwordContainer {
+                background: white;
+                padding: 30px;
+                width: 400px;
+                border-radius: 10px;
+                box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                border: 1px solid #ccc;
+            }
+
+            .password-dialog-title {
+                font-size: 20px;
+                font-weight: bold;
+                margin-bottom: 20px;
+                color: #333;
+                text-align: center;
+            }
+            .password-dialog-input {
+                margin-bottom: 20px;
+            }
+            .password-dialog-error-message {
+                color: #f44336;
+                font-size: 12px;
+                margin-top: 5px;
+                min-height: 18px;
+                display: none;
+            }
+            .password-dialog-error-message.show {
+                display: block;
+            }
+            .password-dialog-buttons {
+                display: flex;
+                gap: 10px;
+                justify-content: center;
+            }
+            .password-dialog-buttons button {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                font-size: 14px;
+                cursor: pointer;
+                background-color: #409eff;
+                color: white;
+                margin-right: 10px;
+            }
+            #password-input {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 14px;
+                outline: none;
+                box-sizing: border-box;
+            }
+            #password-input:focus {
+                border-color: #4caf50;
+            }
+            #password-input:hover {
+                border-color: #4caf50;
+            }
+            #password-input:active {
+                border-color: #4caf50;
+            }
+            #password-input:focus {
+                border-color: #4caf50;
+            }
+            #password-input:hover {
+                border-color: #4caf50;
+            }
         </style>
     </head>
     <body>
@@ -85,6 +173,29 @@
             </button> -->
         </div>
         <div id="tab-content"></div>
+        <!-- 弹出密码输入框 -->
+        <div id="password-dialog" style="display: none">
+            <div class="passwordContainer">
+                <div class="password-dialog-title">请输入密码以退出应用</div>
+                <div class="password-dialog-input">
+                    <input
+                        type="password"
+                        id="password-input"
+                        placeholder="请输入密码"
+                    />
+                    <div
+                        class="password-dialog-error-message"
+                        id="error-message"
+                    >
+                        密码错误，请重试
+                    </div>
+                </div>
+                <div class="password-dialog-buttons">
+                    <button id="password-confirm-btn">确认</button>
+                    <button id="password-cancel-btn">取消</button>
+                </div>
+            </div>
+        </div>
         <script src="renderer.js"></script>
     </body>
 </html>
