@@ -1,6 +1,12 @@
 // main.js
 
-const { app, BrowserWindow, Menu, ipcMain } = require('electron')
+const {
+    app,
+    BrowserWindow,
+    Menu,
+    ipcMain,
+    globalShortcut,
+} = require('electron')
 const path = require('path')
 
 let mainWindow = null
@@ -18,6 +24,7 @@ function createWindow() {
         minimizable: false, // 禁用最小化按钮
         closable: true, // 禁用关闭按钮
         resizable: false, // 禁用调整大小
+        kiosk: true, // 全屏模式
         webPreferences: {
             // 启用 nodeIntegration 以便在渲染进程中使用 require
             nodeIntegration: true,
@@ -31,7 +38,7 @@ function createWindow() {
     })
 
     // 确保窗口始终保持全屏状态
-    // mainWindow.setFullScreen(true)
+    mainWindow.setFullScreen(true)
 
     // 监听窗口试图退出全屏的事件，强制保持全屏
     mainWindow.on('leave-full-screen', () => {
@@ -119,9 +126,19 @@ function createMenu() {
     Menu.setApplicationMenu(menu)
 }
 
+// 禁止打开任务管理器
+function autoStart() {
+    // 禁用Ctrl+Shift+Esc
+    app.setLoginItemSettings({
+        openAtLogin: true, // 设置应用为开机自启动
+        openAsHidden: false, // 应用启动时是否隐藏
+    })
+}
+
 app.whenReady().then(() => {
     createWindow()
     createMenu()
+    autoStart()
 })
 
 // 阻止应用退出（可选，如果需要完全阻止退出）
