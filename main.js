@@ -6,10 +6,7 @@ const path = require('path')
 let mainWindow = null
 
 // 创建右键菜单
-let contextMenu = Menu.buildFromTemplate([
-    { label: 'Item 1', role: 'reload' },
-    { role: 'editMenu' },
-])
+let contextMenu = Menu.buildFromTemplate([{ label: '退出', role: 'quit' }])
 
 function createWindow() {
     mainWindow = new BrowserWindow({
