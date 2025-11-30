@@ -25,7 +25,7 @@ function createWindow() {
     })
 
     // 确保窗口始终保持全屏状态
-    mainWindow.setFullScreen(true)
+    // mainWindow.setFullScreen(true)
 
     // 监听窗口试图退出全屏的事件，强制保持全屏
     mainWindow.on('leave-full-screen', () => {
@@ -65,36 +65,13 @@ function createWindow() {
 function createMenu() {
     const template = [
         {
-            label: '文件',
-            submenu: [
-                {
-                    label: '刷新',
-                    accelerator: 'CmdOrCtrl+R',
-                    click: () => {
-                        if (mainWindow) {
-                            mainWindow.reload()
-                        }
-                    },
-                },
-                {
-                    label: '强制刷新',
-                    accelerator: 'CmdOrCtrl+Shift+R',
-                    click: () => {
-                        if (mainWindow) {
-                            mainWindow.webContents.reloadIgnoringCache()
-                        }
-                    },
-                },
-                { type: 'separator' },
-                {
-                    label: '退出',
-                    accelerator:
-                        process.platform === 'darwin' ? 'Cmd+Q' : 'Ctrl+Q',
-                    click: () => {
-                        app.quit()
-                    },
-                },
-            ],
+            label: '主页',
+            click: () => {
+                if (mainWindow) {
+                    // 发送事件到渲染进程
+                    mainWindow.webContents.send('webview-home')
+                }
+            },
         },
         {
             label: '刷新',
@@ -103,6 +80,21 @@ function createMenu() {
                 if (mainWindow) {
                     mainWindow.reload()
                 }
+            },
+        },
+        // 开启开发者工具
+        {
+            label: '开发者工具',
+            accelerator: 'CmdOrCtrl+I',
+            click: () => {
+                mainWindow.webContents.openDevTools()
+            },
+        },
+        {
+            label: '退出',
+            accelerator: process.platform === 'darwin' ? 'Cmd+Q' : 'Ctrl+Q',
+            click: () => {
+                app.quit()
             },
         },
     ]

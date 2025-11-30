@@ -97,6 +97,24 @@ function setupWebviewListeners(webview, tabEl) {
         addNewTab(e.detail.url)
     })
 
+    webview.addEventListener('webview-home', () => {
+        console.log('webview-home-----111')
+        // 当前激活的标签页加载主页
+        const activeTab = document.querySelector('.tab.active')
+        if (activeTab) {
+            // 找到当前激活的标签页的 webview
+            const targetId = activeTab.id.replace('header-', '')
+            const webviewEl = document.getElementById(targetId)
+            if (webviewEl) {
+                webviewEl.src = 'https://www.csdn.net/'
+            } else {
+                console.log('webviewEl not found-----')
+            }
+        } else {
+            console.log('activeTab not found-----')
+        }
+    })
+
     // 监听页面加载完成，获取标题
     webview.addEventListener('dom-ready', () => {
         // 也可以在这里执行一些脚本，例如自定义右键菜单

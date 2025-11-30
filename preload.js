@@ -25,3 +25,12 @@ ipcRenderer.on('webview-new-window', (e, webContentsId, details) => {
     const newEvent = new CustomEvent('new-window', { detail: details })
     document.getElementById('tab-1').dispatchEvent(newEvent)
 })
+
+ipcRenderer.on('webview-home', () => {
+    console.log('webview-home-----222')
+    const newEvent = new CustomEvent('webview-home')
+    document
+        .querySelector('.tab.active')
+        ?.querySelector('webview')
+        ?.dispatchEvent(newEvent)
+})
