@@ -33,7 +33,9 @@
             "main.js",
             "preload.js",
             "config.js",
-            "package.json"
+            "package.json",
+            "index.html",
+            "renderer.js"
         ],
         "win": {
             "target": [
