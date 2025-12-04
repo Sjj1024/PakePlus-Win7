@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
     <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Electron Tab Browser</title>
         <style>
             /* 简单 CSS 样式 */
@@ -58,6 +60,7 @@
             }
             .active .close-btn {
                 display: block;
+                background: white;
             }
             .close-btn {
                 position: absolute;
@@ -70,8 +73,7 @@
                 padding: 0 5px;
                 height: 100%; /* 让按钮与标签页高度一致 */
                 line-height: 40px; /* 垂直居中 'x' */
-                display: none;
-                background: white;
+                background: #e0e0e0;
             }
             .close-btn:hover {
                 background: #ccc;
