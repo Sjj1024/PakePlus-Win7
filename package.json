@@ -26,6 +26,7 @@
     "build": {
         "appId": "com.pakeplus.win7",
         "productName": "图书检索系统",
+        "icon": "icon.ico",
         "directories": {
             "output": "dist"
         },
