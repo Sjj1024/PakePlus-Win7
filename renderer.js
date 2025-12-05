@@ -81,7 +81,7 @@ function activateTab(targetId) {
 }
 
 // 定义默认主页URL
-const DEFAULT_HOME_URL = 'https://juejin.cn/'
+const DEFAULT_HOME_URL = 'http://s.tabook.cn:9999/'
 
 // 初始创建一个默认标签页
 addNewTab(DEFAULT_HOME_URL)
