@@ -4,6 +4,8 @@ const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron')
 const path = require('path')
 
 let mainWindow = null
+// 标记是否是 webview 的全屏操作
+let isWebviewFullscreen = false
 
 // 创建右键菜单
 let contextMenu = Menu.buildFromTemplate([
@@ -40,7 +42,16 @@ function createWindow() {
 
     // 监听窗口试图退出全屏的事件，强制保持全屏
     mainWindow.on('leave-full-screen', () => {
-        mainWindow.setFullScreen(true)
+        // 如果是 webview 的全屏操作导致的退出，不强制窗口重新进入全屏
+        // 使用 setImmediate 确保 webview 事件已经处理
+        setImmediate(() => {
+            if (isWebviewFullscreen) {
+                isWebviewFullscreen = false
+                return
+            }
+            // 否则强制保持全屏
+            mainWindow.setFullScreen(true)
+        })
     })
 
     // 监听窗口试图最小化的事件，防止最小化
@@ -65,6 +76,18 @@ function createWindow() {
             mainWindow.webContents.send('webview-new-window', wc.id, details)
             // 阻止窗口打开
             return { action: 'deny' }
+        })
+
+        // 监听 webview 进入全屏事件
+        wc.on('enter-full-screen', () => {
+            console.log('webview enter-full-screen')
+            isWebviewFullscreen = true
+        })
+
+        // 监听 webview 退出全屏事件
+        wc.on('leave-full-screen', () => {
+            console.log('webview leave-full-screen')
+            isWebviewFullscreen = true // 标记为 webview 全屏操作
         })
     })
 
