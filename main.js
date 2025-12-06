@@ -25,6 +25,8 @@ function createWindow() {
         closable: true, // 禁用关闭按钮
         resizable: false, // 禁用调整大小
         kiosk: true, // 全屏模式
+        autoHideMenuBar: true, // 自动隐藏菜单栏
+        frame: false, // 无边框窗口（隐藏标题栏）
         webPreferences: {
             // 启用 nodeIntegration 以便在渲染进程中使用 require
             nodeIntegration: true,
@@ -104,6 +106,17 @@ ipcMain.on('context-menu', (e, params) => {
     contextMenu.popup()
 })
 
+// 监听切换开发者工具事件
+ipcMain.on('toggle-devtools', () => {
+    if (mainWindow) {
+        if (mainWindow.webContents.isDevToolsOpened()) {
+            mainWindow.webContents.closeDevTools()
+        } else {
+            mainWindow.webContents.openDevTools()
+        }
+    }
+})
+
 // 监听密码验证请求
 ipcMain.on('verify-password', (event, password) => {
     console.log('verify-password-----', password)
@@ -168,7 +181,7 @@ function autoStart() {
 
 app.whenReady().then(() => {
     createWindow()
-    createMenu()
+    // createMenu() // 不再需要菜单栏，按钮已移到 tab 栏
     autoStart()
 })
 

@@ -83,8 +83,105 @@ function activateTab(targetId) {
 // 定义默认主页URL
 const DEFAULT_HOME_URL = 'http://s.tabook.cn:9999/'
 
+// 初始化工具栏按钮
+function initToolbarButtons() {
+    // 主页按钮
+    document.getElementById('home-btn').addEventListener('click', () => {
+        const activeTab = document.querySelector('.tab.active')
+        if (activeTab) {
+            const targetId = activeTab.id.replace('header-', '')
+            const webviewEl = document.getElementById(targetId)
+            if (webviewEl) {
+                webviewEl.src = DEFAULT_HOME_URL
+            }
+        }
+    })
+
+    // 刷新按钮
+    document.getElementById('reload-btn').addEventListener('click', () => {
+        const activeTab = document.querySelector('.tab.active')
+        if (activeTab) {
+            const targetId = activeTab.id.replace('header-', '')
+            const webviewEl = document.getElementById(targetId)
+            if (webviewEl) {
+                webviewEl.reload()
+            }
+        }
+    })
+
+    // 开发者工具按钮
+    document.getElementById('devtools-btn').addEventListener('click', () => {
+        if (window.electronAPI && window.electronAPI.send) {
+            window.electronAPI.send('toggle-devtools')
+        }
+    })
+
+    // 退出按钮
+    document.getElementById('exit-btn').addEventListener('click', () => {
+        // 直接显示密码对话框
+        const passwordDialog = document.getElementById('password-dialog')
+        const passwordInput = document.getElementById('password-input')
+        const errorMessage = document.getElementById('error-message')
+
+        if (passwordDialog) {
+            passwordDialog.style.display = 'flex'
+            if (passwordInput) {
+                passwordInput.value = ''
+                passwordInput.focus()
+            }
+            if (errorMessage) {
+                errorMessage.style.display = 'none'
+            }
+        }
+    })
+
+    // 初始化密码对话框按钮（如果还没有初始化）
+    const passwordConfirmBtn = document.getElementById('password-confirm-btn')
+    const passwordCancelBtn = document.getElementById('password-cancel-btn')
+    const passwordInput = document.getElementById('password-input')
+
+    if (
+        passwordConfirmBtn &&
+        !passwordConfirmBtn.hasAttribute('data-initialized')
+    ) {
+        passwordConfirmBtn.setAttribute('data-initialized', 'true')
+        passwordConfirmBtn.addEventListener('click', () => {
+            const password = passwordInput ? passwordInput.value : ''
+            if (window.electronAPI && window.electronAPI.send) {
+                window.electronAPI.send('verify-password', password)
+            }
+        })
+    }
+
+    if (
+        passwordCancelBtn &&
+        !passwordCancelBtn.hasAttribute('data-initialized')
+    ) {
+        passwordCancelBtn.setAttribute('data-initialized', 'true')
+        passwordCancelBtn.addEventListener('click', () => {
+            const passwordDialog = document.getElementById('password-dialog')
+            if (passwordDialog) {
+                passwordDialog.style.display = 'none'
+            }
+        })
+    }
+
+    // 密码输入框回车键处理
+    if (passwordInput && !passwordInput.hasAttribute('data-initialized')) {
+        passwordInput.setAttribute('data-initialized', 'true')
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                passwordConfirmBtn.click()
+            }
+        })
+    }
+}
+
 // 初始创建一个默认标签页
 addNewTab(DEFAULT_HOME_URL)
+
+// 初始化工具栏按钮
+initToolbarButtons()
 
 // 监听主页事件（从菜单栏触发）
 document.addEventListener('webview-home', () => {

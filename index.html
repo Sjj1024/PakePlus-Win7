@@ -16,8 +16,35 @@
                 height: 40px;
                 background: #f0f0f0;
                 display: flex;
+                align-items: center;
                 /* padding-left: 10px; */
             }
+            .toolbar-buttons {
+                display: flex;
+                align-items: center;
+                height: 100%;
+                border-right: 1px solid #ccc;
+                padding: 0 5px;
+            }
+            .toolbar-btn {
+                padding: 5px 12px;
+                margin: 0 2px;
+                border: none;
+                background: #e0e0e0;
+                cursor: pointer;
+                font-size: 16px;
+                /* font-weight: bold; */
+                line-height: 20px;
+                height: 28px;
+                border-radius: 3px;
+                color: #333;
+            }
+            /* .toolbar-btn:hover {
+                background: #d0d0d0;
+            } */
+            /* .toolbar-btn:active {
+                background: #c0c0c0;
+            } */
             .tab.active {
                 background: white;
                 border-bottom: none;
@@ -170,6 +197,14 @@
     </head>
     <body>
         <div id="tab-bar">
+            <div class="toolbar-buttons">
+                <button class="toolbar-btn" id="home-btn">主页</button>
+                <button class="toolbar-btn" id="reload-btn">刷新</button>
+                <button class="toolbar-btn" id="devtools-btn">
+                    开发者工具
+                </button>
+                <button class="toolbar-btn" id="exit-btn">退出</button>
+            </div>
             <!-- <button id="new-tab-btn" onclick="addNewTab('https://juejin.cn/')">
                 +
             </button> -->
