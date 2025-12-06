@@ -10,7 +10,8 @@
         "build:win32": "electron-builder --win --ia32",
         "build:win64": "electron-builder --win --x64",
         "build:mac": "electron-builder --mac",
-        "build:linux": "electron-builder --linux"
+        "build:linux": "electron-builder --linux",
+        "build:icon": "png2icons icon.png icon -allp -bc -i"
     },
     "keywords": [
         "electron",
@@ -52,18 +53,18 @@
                     ]
                 }
             ],
-            "icon": "build/icon.ico"
+            "icon": "icon.ico"
         },
         "mac": {
             "target": "dmg",
-            "icon": "build/icon.icns"
+            "icon": "icon.icns"
         },
         "linux": {
             "target": [
                 "AppImage",
                 "deb"
             ],
-            "icon": "build/icon.png"
+            "icon": "icon.png"
         },
         "nsis": {
             "oneClick": false,
