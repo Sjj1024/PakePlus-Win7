@@ -73,3 +73,12 @@ ipcRenderer.on('password-verify-error', (e, error) => {
     console.log('password-verify-error-----', error)
     document.getElementById('error-message').style.display = 'block'
 })
+
+ipcRenderer.on('password-verify-success', () => {
+    console.log('password-verify-success-----')
+    // 关闭密码对话框
+    const passwordDialog = document.getElementById('password-dialog')
+    if (passwordDialog) {
+        passwordDialog.style.display = 'none'
+    }
+})

@@ -6,6 +6,8 @@ const path = require('path')
 let mainWindow = null
 // 标记是否是 webview 的全屏操作
 let isWebviewFullscreen = false
+// 标记密码是否已验证
+let passwordVerified = false
 
 // 创建右键菜单
 let contextMenu = Menu.buildFromTemplate([
@@ -62,11 +64,17 @@ function createWindow() {
         mainWindow.setFullScreen(true)
     })
 
-    // 监听窗口试图关闭的事件，阻止关闭
-    // mainWindow.on('close', (event) => {
-    //     event.preventDefault()
-    //     mainWindow.setFullScreen(true)
-    // })
+    // 监听窗口试图关闭的事件，阻止 Alt+F4 等关闭操作
+    mainWindow.on('close', (event) => {
+        // 如果密码已验证，允许关闭
+        if (passwordVerified) {
+            passwordVerified = false // 重置标志
+            return
+        }
+        // 否则阻止关闭并显示密码对话框
+        event.preventDefault()
+        mainWindow.webContents.send('exit-app')
+    })
 
     // 监听 webview 标签的加载完成事件
     mainWindow.webContents.on('did-attach-webview', (event, wc) => {
@@ -121,7 +129,14 @@ ipcMain.on('toggle-devtools', () => {
 ipcMain.on('verify-password', (event, password) => {
     console.log('verify-password-----', password)
     if (password === '123456') {
-        app.quit()
+        // 设置密码验证标志
+        passwordVerified = true
+        // 关闭密码对话框
+        event.sender.send('password-verify-success')
+        // 延迟退出，确保消息已发送
+        setTimeout(() => {
+            app.quit()
+        }, 100)
     } else {
         event.sender.send('password-verify-error', '密码错误')
     }
@@ -183,6 +198,8 @@ app.whenReady().then(() => {
     createWindow()
     // createMenu() // 不再需要菜单栏，按钮已移到 tab 栏
     autoStart()
+    // 初始化密码验证标志
+    passwordVerified = false
 })
 
 // 阻止应用退出（可选，如果需要完全阻止退出）
