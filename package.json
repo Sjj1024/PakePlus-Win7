@@ -80,7 +80,5 @@
             "createStartMenuShortcut": true
         }
     },
-    "dependencies": {
-        "electron-tabs": "^1.0.4"
-    }
+    "dependencies": {}
 }
