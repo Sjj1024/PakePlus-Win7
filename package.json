@@ -21,7 +21,9 @@
     "license": "MIT",
     "devDependencies": {
         "electron": "^22.3.27",
-        "electron-builder": "^24.9.1"
+        "electron-builder": "^24.9.1",
+        "png-to-ico": "^3.0.1",
+        "sharp": "^0.34.5"
     },
     "build": {
         "appId": "com.pakeplus.win7",

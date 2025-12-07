@@ -149,3 +149,5 @@ Edit the `build` section in `package.json`:
 ## License
 
 MIT
+
+npm install --save-dev png-to-ico
