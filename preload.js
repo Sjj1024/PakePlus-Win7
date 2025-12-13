@@ -1,5 +1,7 @@
 // 预加载脚本
 // 这个脚本在网页内容加载之前运行，可以安全地暴露一些 API 给网页
+// 也可以通过 contextBridge 来暴露 API 给渲染进程
+// 也可以让网页通过 window.electronAPI 来调用 API
 const { ipcRenderer } = require('electron')
 const { contextBridge } = require('electron')
 
