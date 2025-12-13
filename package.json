@@ -12,7 +12,8 @@
         "build:mac": "electron-builder --mac",
         "build:linux": "electron-builder --linux",
         "icon:icns": "node scripts/createIcon.cjs -icon icon.png -padding 1 -format icns",
-        "icon:ico": "node scripts/createIcon.cjs -icon icon.png"
+        "icon:ico": "node scripts/createIcon.cjs -icon icon.png",
+        "worker:pp": "node scripts/ppworker.cjs"
     },
     "keywords": [
         "electron",
