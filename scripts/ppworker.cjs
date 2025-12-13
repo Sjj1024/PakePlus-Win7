@@ -19,8 +19,8 @@ const updateRendererJs = async (url) => {
         'utf8'
     )
     const newRendererJs = rendererJs.replace(
-        /'const DEFAULT_HOME_URL = ".*"/, // 匹配任意字符串
-        `const DEFAULT_HOME_URL = "${url}"`
+        /const DEFAULT_HOME_URL = '.*?'/, // 匹配任意url地址，需要使用正则表达式
+        `const DEFAULT_HOME_URL = '${url}'`
     )
     console.log('newRendererJs:', newRendererJs)
     await fs.writeFile(
@@ -38,8 +38,8 @@ const updateMainJs = async (password) => {
     )
     console.log('mainJs:', mainJs)
     const newMainJs = mainJs.replace(
-        /const defaultExitPassword = ".*"/,
-        `const defaultExitPassword = "${password}"`
+        /const defaultExitPassword = '.*?'/,
+        `const defaultExitPassword = '${password}'`
     )
     console.log('newMainJs:', newMainJs)
     await fs.writeFile(path.join(__dirname, '../', 'main.js'), newMainJs)
