@@ -1,6 +1,5 @@
 // main.js
-
-const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron')
+const { app, BrowserWindow, Menu, ipcMain } = require('electron')
 const path = require('path')
 
 let mainWindow = null
@@ -8,6 +7,8 @@ let mainWindow = null
 let isWebviewFullscreen = false
 // 标记密码是否已验证
 let passwordVerified = false
+// 默认退出密码
+const defaultExitPassword = '123456'
 
 // 创建右键菜单
 let contextMenu = Menu.buildFromTemplate([
@@ -128,7 +129,7 @@ ipcMain.on('toggle-devtools', () => {
 // 监听密码验证请求
 ipcMain.on('verify-password', (event, password) => {
     console.log('verify-password-----', password)
-    if (password === '123456') {
+    if (password === defaultExitPassword) {
         // 设置密码验证标志
         passwordVerified = true
         // 关闭密码对话框
