@@ -80,5 +80,8 @@
             "createStartMenuShortcut": true
         }
     },
-    "dependencies": {}
+    "dependencies": {
+        "commander": "^13.1.0",
+        "fs-extra": "^11.3.0"
+    }
 }
