@@ -1,4 +1,4 @@
-name: Build Windows
+name: BuildWinAll
 
 on:
     push:
