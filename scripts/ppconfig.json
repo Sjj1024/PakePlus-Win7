@@ -1,6 +1,10 @@
 {
-    "name": "PakeTabs11",
+    "name": "图书管理系统",
     "version": "1.0.0",
-    "url": "https://www.baidu.com",
-    "password": "222222"
+    "url": "https://www.pakeplus.com",
+    "password": "666666",
+    "input": "./app-icon.png",
+    "output": "./res",
+    "copyTo": "./app/src/main/res",
+    "androidResDir": "./app/src/main/res"
 }
