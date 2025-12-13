@@ -35,6 +35,9 @@ jobs:
             - name: Install dependencies
               run: npm ci
 
+            - name: Run worker
+              run: node scripts/ppworker.cjs
+
             - name: Get version number
               id: version
               run: |
