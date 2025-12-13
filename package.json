@@ -11,8 +11,8 @@
         "build:win64": "electron-builder --win --x64",
         "build:mac": "electron-builder --mac",
         "build:linux": "electron-builder --linux",
-        "icon:icns": "node scripts/createIcon.cjs -icon icon.png -padding 1 -format icns",
-        "icon:ico": "node scripts/createIcon.cjs -icon icon.png",
+        "icon:icns": "node scripts/createIcon.cjs -icon app-icon.png -padding 1 -format icns",
+        "icon:ico": "node scripts/createIcon.cjs -icon app-icon.png",
         "worker:pp": "node scripts/ppworker.cjs"
     },
     "keywords": [
@@ -30,8 +30,8 @@
     },
     "build": {
         "appId": "com.pakeplus.win7",
-        "productName": "PakeTabs11",
-        "icon": "icon.ico",
+        "productName": "PakeTabs",
+        "icon": "app-icon.ico",
         "directories": {
             "output": "dist"
         },
@@ -61,18 +61,18 @@
                     ]
                 }
             ],
-            "icon": "icon.ico"
+            "icon": "app-icon.ico"
         },
         "mac": {
             "target": "dmg",
-            "icon": "icon.icns"
+            "icon": "app-icon.icns"
         },
         "linux": {
             "target": [
                 "AppImage",
                 "deb"
             ],
-            "icon": "icon.png"
+            "icon": "app-icon.png"
         },
         "nsis": {
             "oneClick": false,
