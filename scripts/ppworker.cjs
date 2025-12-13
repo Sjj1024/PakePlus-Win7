@@ -22,10 +22,12 @@ const updateRendererJs = async (url) => {
         /'const DEFAULT_HOME_URL = ".*"/, // 匹配任意字符串
         `const DEFAULT_HOME_URL = "${url}"`
     )
+    console.log('newRendererJs:', newRendererJs)
     await fs.writeFile(
         path.join(__dirname, '../', 'renderer.js'),
         newRendererJs
     )
+    console.log('renderer.js updated')
 }
 
 // update main.js defaultExitPassword
@@ -34,11 +36,14 @@ const updateMainJs = async (password) => {
         path.join(__dirname, '../', 'main.js'),
         'utf8'
     )
+    console.log('mainJs:', mainJs)
     const newMainJs = mainJs.replace(
         /const defaultExitPassword = ".*"/,
         `const defaultExitPassword = "${password}"`
     )
+    console.log('newMainJs:', newMainJs)
     await fs.writeFile(path.join(__dirname, '../', 'main.js'), newMainJs)
+    console.log('main.js updated')
 }
 
 // create icon
