@@ -1,1 +1,90 @@
-{"name":"pakeplus-win7","version":"1.0.0","description":"跨平台桌面应用，支持 Windows 7","main":"main.js","scripts":{"start":"electron .","build":"electron-builder","build:win":"electron-builder --win","build:win32":"electron-builder --win --ia32","build:win64":"electron-builder --win --x64","build:mac":"electron-builder --mac","build:linux":"electron-builder --linux","icon:icns":"node scripts/createIcon.cjs -icon icon.png -padding 1 -format icns","icon:ico":"node scripts/createIcon.cjs -icon icon.png","worker:pp":"node scripts/ppworker.cjs"},"keywords":["electron","desktop","cross-platform"],"author":"","license":"MIT","devDependencies":{"electron":"^22.3.27","electron-builder":"^24.9.1","png-to-ico":"^3.0.1","sharp":"^0.34.5"},"build":{"appId":"com.pakeplus.win7","productName":"PakeTabs","icon":"icon.ico","directories":{"output":"dist"},"files":["main.js","preload.js","config.js","package.json","index.html","renderer.js","password-dialog.html"],"win":{"target":[{"target":"nsis","arch":["ia32","x64"]},{"target":"portable","arch":["ia32","x64"]}],"icon":"icon.ico"},"mac":{"target":"dmg","icon":"icon.icns"},"linux":{"target":["AppImage","deb"],"icon":"icon.png"},"nsis":{"oneClick":false,"allowToChangeInstallationDirectory":true,"perMachine":true,"runAfterFinish":true,"createDesktopShortcut":true,"createStartMenuShortcut":true}},"dependencies":{"commander":"^13.1.0","fs-extra":"^11.3.0"}}
+{
+    "name": "pakeplus-win7",
+    "version": "1.0.0",
+    "description": "跨平台桌面应用，支持 Windows 7",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron .",
+        "build": "electron-builder",
+        "build:win": "electron-builder --win",
+        "build:win32": "electron-builder --win --ia32",
+        "build:win64": "electron-builder --win --x64",
+        "build:mac": "electron-builder --mac",
+        "build:linux": "electron-builder --linux",
+        "icon:icns": "node scripts/createIcon.cjs -icon icon.png -padding 1 -format icns",
+        "icon:ico": "node scripts/createIcon.cjs -icon icon.png",
+        "worker:pp": "node scripts/ppworker.cjs"
+    },
+    "keywords": [
+        "electron",
+        "desktop",
+        "cross-platform"
+    ],
+    "author": "",
+    "license": "MIT",
+    "devDependencies": {
+        "electron": "^22.3.27",
+        "electron-builder": "^24.9.1",
+        "png-to-ico": "^3.0.1",
+        "sharp": "^0.34.5"
+    },
+    "build": {
+        "appId": "com.pakeplus.win7",
+        "productName": "PakeTabs11",
+        "icon": "icon.ico",
+        "directories": {
+            "output": "dist"
+        },
+        "files": [
+            "main.js",
+            "preload.js",
+            "config.js",
+            "package.json",
+            "index.html",
+            "renderer.js",
+            "password-dialog.html"
+        ],
+        "win": {
+            "target": [
+                {
+                    "target": "nsis",
+                    "arch": [
+                        "ia32",
+                        "x64"
+                    ]
+                },
+                {
+                    "target": "portable",
+                    "arch": [
+                        "ia32",
+                        "x64"
+                    ]
+                }
+            ],
+            "icon": "icon.ico"
+        },
+        "mac": {
+            "target": "dmg",
+            "icon": "icon.icns"
+        },
+        "linux": {
+            "target": [
+                "AppImage",
+                "deb"
+            ],
+            "icon": "icon.png"
+        },
+        "nsis": {
+            "oneClick": false,
+            "allowToChangeInstallationDirectory": true,
+            "perMachine": true,
+            "runAfterFinish": true,
+            "createDesktopShortcut": true,
+            "createStartMenuShortcut": true
+        }
+    },
+    "dependencies": {
+        "commander": "^13.1.0",
+        "fs-extra": "^11.3.0"
+    }
+}

@@ -3,7 +3,7 @@ const tabBar = document.getElementById('tab-bar')
 const tabContent = document.getElementById('tab-content')
 let tabIdCounter = 0
 // 定义默认主页URL
-const DEFAULT_HOME_URL = 'http://s.tabook.cn:9999/'
+const DEFAULT_HOME_URL = 'https://www.baidu.com'
 
 /**
  * 添加新的标签页

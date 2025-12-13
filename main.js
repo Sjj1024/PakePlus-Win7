@@ -8,7 +8,7 @@ let isWebviewFullscreen = false
 // 标记密码是否已验证
 let passwordVerified = false
 // 默认退出密码
-const defaultExitPassword = '123456'
+const defaultExitPassword = '222222'
 
 // 创建右键菜单
 let contextMenu = Menu.buildFromTemplate([
