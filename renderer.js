@@ -2,6 +2,8 @@
 const tabBar = document.getElementById('tab-bar')
 const tabContent = document.getElementById('tab-content')
 let tabIdCounter = 0
+// 定义默认主页URL
+const DEFAULT_HOME_URL = 'http://s.tabook.cn:9999/'
 
 /**
  * 添加新的标签页
@@ -80,9 +82,6 @@ function activateTab(targetId) {
     document.getElementById(targetId).classList.add('active')
 }
 
-// 定义默认主页URL
-const DEFAULT_HOME_URL = 'http://s.tabook.cn:9999/'
-
 // 初始化工具栏按钮
 function initToolbarButtons() {
     // 主页按钮
@@ -110,11 +109,11 @@ function initToolbarButtons() {
     })
 
     // 开发者工具按钮
-    document.getElementById('devtools-btn').addEventListener('click', () => {
-        if (window.electronAPI && window.electronAPI.send) {
-            window.electronAPI.send('toggle-devtools')
-        }
-    })
+    // document.getElementById('devtools-btn').addEventListener('click', () => {
+    //     if (window.electronAPI && window.electronAPI.send) {
+    //         window.electronAPI.send('toggle-devtools')
+    //     }
+    // })
 
     // 退出按钮
     document.getElementById('exit-btn').addEventListener('click', () => {
@@ -176,12 +175,6 @@ function initToolbarButtons() {
         })
     }
 }
-
-// 初始创建一个默认标签页
-addNewTab(DEFAULT_HOME_URL)
-
-// 初始化工具栏按钮
-initToolbarButtons()
 
 // 监听主页事件（从菜单栏触发）
 document.addEventListener('webview-home', () => {
@@ -289,7 +282,13 @@ function closeTab(targetId) {
             activateTab(nextTabId)
         } else {
             // 如果所有标签页都关闭了，则自动新建一个默认标签页
-            addNewTab('https://www.google.com')
+            addNewTab(DEFAULT_HOME_URL)
         }
     }
 }
+
+// 初始创建一个默认标签页
+addNewTab(DEFAULT_HOME_URL)
+
+// 初始化工具栏按钮
+initToolbarButtons()
