@@ -3,7 +3,7 @@ const tabBar = document.getElementById('tab-bar')
 const tabContent = document.getElementById('tab-content')
 let tabIdCounter = 0
 // 定义默认主页URL
-const DEFAULT_HOME_URL = 'https://www.baidu.com'
+const DEFAULT_HOME_URL = 'https://pakeplus.com'
 
 /**
  * 添加新的标签页
