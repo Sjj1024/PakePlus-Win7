@@ -1,5 +1,6 @@
 const fs = require('fs-extra')
 const path = require('path')
+const { execSync } = require('child_process')
 const ppconfig = require('./ppconfig.json')
 
 // update package.json build productName
@@ -30,6 +31,29 @@ const updateMainJs = async (password) => {
         `const defaultExitPassword = "${password}"`
     )
     await fs.writeFile(path.join(__dirname, 'main.js'), newMainJs)
+}
+
+// create icon
+const createIcnsIcon = async () => {
+    try {
+        execSync(
+            `node scripts/createIcon.cjs -icon icon.png -padding 1 -format icns`
+        )
+        console.log('🚀 icns icon created')
+    } catch (error) {
+        console.error('🚨 error creating icns icon:', error)
+    }
+}
+
+const createIcoIcon = async () => {
+    try {
+        execSync(
+            `node scripts/createIcon.cjs -icon icon.png -padding 1 -format ico`
+        )
+        console.log('🚀 ico icon created')
+    } catch (error) {
+        console.error('🚨 error creating ico icon:', error)
+    }
 }
 
 // Main execution
