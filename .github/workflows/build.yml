@@ -20,22 +20,22 @@ jobs:
 
         strategy:
             matrix:
-                arch: [ia32, x64]
+                arch: [x64]
 
         steps:
-            - name: 检出代码
+            - name: Checkout code
               uses: actions/checkout@v4
 
-            - name: 设置 Node.js
+            - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
                   node-version: '18'
                   cache: 'npm'
 
-            - name: 安装依赖
+            - name: Install dependencies
               run: npm ci
 
-            - name: 获取版本号
+            - name: Get version number
               id: version
               run: |
                   if ("${{ github.event_name }}" -eq "workflow_dispatch" -and "${{ github.event.inputs.version }}" -ne "") {
@@ -46,16 +46,16 @@ jobs:
                   }
               shell: pwsh
 
-            - name: 构建 Windows (${{ matrix.arch }})
+            - name: Build Windows (${{ matrix.arch }})
               run: npm run build:win -- --${{ matrix.arch }}
               env:
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-            - name: 列出构建产物
+            - name: List build artifacts
               run: dir dist /B
               shell: cmd
 
-            - name: 上传构建产物
+            - name: Upload build artifacts
               uses: actions/upload-artifact@v4
               with:
                   name: windows-${{ matrix.arch }}
@@ -71,10 +71,10 @@ jobs:
             contents: write
 
         steps:
-            - name: 检出代码
+            - name: Checkout code
               uses: actions/checkout@v4
 
-            - name: 获取版本号
+            - name: Get version number
               id: version
               run: |
                   if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ -n "${{ github.event.inputs.version }}" ]; then
@@ -84,14 +84,14 @@ jobs:
                     echo "version=$VERSION" >> $GITHUB_OUTPUT
                   fi
 
-            - name: 下载所有构建产物
+            - name: Download all build artifacts
               uses: actions/download-artifact@v4
               with:
                   path: artifacts
                   pattern: windows-*
                   merge-multiple: true
 
-            - name: 列出下载的文件结构
+            - name: List downloaded file structure
               run: |
                   echo "=== 文件结构 ==="
                   find artifacts -type f -name "*.exe" | sort
@@ -106,9 +106,9 @@ jobs:
                     ls -la artifacts/windows-x64/
                   fi
 
-            - name: 重命名文件（修复版本号）
+            - name: Rename files (fix version number)
               run: |
-                  # 查找所有 .exe 文件并重命名错误的版本号
+                  # Find all .exe files and rename the wrong version number
                   for file in artifacts/*.exe; do
                     if [ -f "$file" ]; then
                       # 将 1.0.0 替换为正确的版本号
@@ -130,7 +130,7 @@ jobs:
                     fi
                   done
 
-            - name: 创建 Release
+            - name: Create Release
               uses: softprops/action-gh-release@v1
               with:
                   tag_name: v${{ steps.version.outputs.version }}
