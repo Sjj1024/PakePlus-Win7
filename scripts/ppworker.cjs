@@ -5,39 +5,55 @@ const ppconfig = require('./ppconfig.json')
 
 // update package.json build productName
 const updatePackageJson = async (appName) => {
-    const packageJson = await fs.readJson(path.join(__dirname, 'package.json'))
+    const packageJson = await fs.readJson(
+        path.join(__dirname, '../', 'package.json')
+    )
     packageJson.build.productName = appName
-    await fs.writeJson(path.join(__dirname, 'package.json'), packageJson)
+    await fs.writeJson(path.join(__dirname, '../', 'package.json'), packageJson)
 }
 
 // update renderer.js DEFAULT_HOME_URL
 const updateRendererJs = async (url) => {
     const rendererJs = await fs.readFile(
-        path.join(__dirname, 'renderer.js'),
+        path.join(__dirname, '../', 'renderer.js'),
         'utf8'
     )
     const newRendererJs = rendererJs.replace(
         /'const DEFAULT_HOME_URL = ".*"/, // 匹配任意字符串
         `const DEFAULT_HOME_URL = "${url}"`
     )
-    await fs.writeFile(path.join(__dirname, 'renderer.js'), newRendererJs)
+    await fs.writeFile(
+        path.join(__dirname, '../', 'renderer.js'),
+        newRendererJs
+    )
 }
 
 // update main.js defaultExitPassword
 const updateMainJs = async (password) => {
-    const mainJs = await fs.readFile(path.join(__dirname, 'main.js'), 'utf8')
+    const mainJs = await fs.readFile(
+        path.join(__dirname, '../', 'main.js'),
+        'utf8'
+    )
     const newMainJs = mainJs.replace(
         /const defaultExitPassword = ".*"/,
         `const defaultExitPassword = "${password}"`
     )
-    await fs.writeFile(path.join(__dirname, 'main.js'), newMainJs)
+    await fs.writeFile(path.join(__dirname, '../', 'main.js'), newMainJs)
 }
 
 // create icon
 const createIcnsIcon = async () => {
     try {
         execSync(
-            `node scripts/createIcon.cjs -icon icon.png -padding 1 -format icns`
+            `node ${path.join(
+                __dirname,
+                '../',
+                'scripts/createIcon.cjs'
+            )} -icon ${path.join(
+                __dirname,
+                '../',
+                'icon.png'
+            )} -padding 1 -format icns`
         )
         console.log('🚀 icns icon created')
     } catch (error) {
@@ -48,7 +64,15 @@ const createIcnsIcon = async () => {
 const createIcoIcon = async () => {
     try {
         execSync(
-            `node scripts/createIcon.cjs -icon icon.png -padding 1 -format ico`
+            `node ${path.join(
+                __dirname,
+                '../',
+                'scripts/createIcon.cjs'
+            )} -icon ${path.join(
+                __dirname,
+                '../',
+                'icon.png'
+            )} -padding 1 -format ico`
         )
         console.log('🚀 ico icon created')
     } catch (error) {
