@@ -1,4 +1,4 @@
-name: BuildWinAll
+name: Buildi32X64
 
 on:
     push:
