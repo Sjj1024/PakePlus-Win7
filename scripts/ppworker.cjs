@@ -4,10 +4,11 @@ const { execSync } = require('child_process')
 const ppconfig = require('./ppconfig.json')
 
 // update package.json build productName
-const updatePackageJson = async (appName) => {
+const updatePackageJson = async (appName, version) => {
     const packageJson = await fs.readJson(
         path.join(__dirname, '../', 'package.json')
     )
+    packageJson.version = version
     packageJson.build.productName = appName
     await fs.writeJson(path.join(__dirname, '../', 'package.json'), packageJson)
 }
@@ -93,7 +94,7 @@ const main = async () => {
     console.log('version:', version)
     console.log('url:', url)
     console.log('password:', password)
-    await updatePackageJson(name)
+    await updatePackageJson(name, version)
     await updateRendererJs(url)
     await updateMainJs(password)
     await createIcnsIcon()
