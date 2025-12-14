@@ -109,13 +109,19 @@ jobs:
                     ls -la artifacts/windows-x64/
                   fi
 
-            - name: Rename files (fix version number)
+            - name: Rename files (prefix with branch or tag name)
               run: |
-                  # Find all .exe files and rename the wrong version number
+                  PREFIX="${{ github.ref_name }}"
+
+                  echo "使用前缀: $PREFIX"
+
+                  # 处理 artifacts 根目录
                   for file in artifacts/*.exe; do
                     if [ -f "$file" ]; then
-                      # 将 1.0.0 替换为正确的版本号
-                      new_file=$(echo "$file" | sed "s/1\.0\.0/${{ steps.version.outputs.version }}/g")
+                      dir=$(dirname "$file")
+                      base=$(basename "$file")
+                      new_file="$dir/$PREFIX-$base"
+
                       if [ "$file" != "$new_file" ]; then
                         mv "$file" "$new_file"
                         echo "重命名: $file -> $new_file"
@@ -123,11 +129,14 @@ jobs:
                     fi
                   done
 
-                  # 处理子目录中的文件
-                  find artifacts -name "*.exe" -type f | while read file; do
-                    # 将 1.0.0 替换为正确的版本号
-                    new_file=$(echo "$file" | sed "s/1\.0\.0/${{ steps.version.outputs.version }}/g")
-                    if [ "$file" != "$new_file" ]; then
+                  # 处理子目录中的 exe 文件
+                  find artifacts -type f -name "*.exe" | while read file; do
+                    dir=$(dirname "$file")
+                    base=$(basename "$file")
+
+                    # 避免重复加前缀
+                    if [[ "$base" != "$PREFIX-"* ]]; then
+                      new_file="$dir/$PREFIX-$base"
                       mv "$file" "$new_file"
                       echo "重命名: $file -> $new_file"
                     fi
