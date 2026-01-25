@@ -133,7 +133,7 @@ jobs:
             - name: 创建 Release
               uses: softprops/action-gh-release@v1
               with:
-                  tag_name: v${{ steps.version.outputs.version }}
+                  tag_name: ${{ github.ref_name }}
                   name: Release v${{ steps.version.outputs.version }}
                   body: |
                       ## Windows 版本发布 v${{ steps.version.outputs.version }}
