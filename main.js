@@ -13,6 +13,7 @@ function createWindow() {
         minWidth: config.minWidth,
         minHeight: config.minHeight,
         autoHideMenuBar: true, // 自动隐藏菜单栏
+        maximizable: false,
         title: config.appTitle,
         titleBarStyle: 'hiddenInset',
         webPreferences: {
