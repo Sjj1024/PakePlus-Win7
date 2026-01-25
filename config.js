@@ -1,9 +1,9 @@
 module.exports = {
-    websiteUrl: 'https://pakeplus.com/zh/',
-    windowWidth: 1200,
-    windowHeight: 800,
-    minWidth: 800,
-    minHeight: 600,
+    websiteUrl: 'https://qcmpcepc.gzcj-szh.com/#/',
+    windowWidth: 1920,
+    windowHeight: 1080,
+    minWidth: 1920,
+    minHeight: 1080,
     openDevTools: false,
-    appTitle: 'PakePlus',
+    appTitle: '贵闽云茶',
 }

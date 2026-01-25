@@ -27,8 +27,8 @@
         "electron-builder": "^24.9.1"
     },
     "build": {
-        "appId": "com.pakeplus.win7",
-        "productName": "PakePlus-Win7",
+        "appId": "com.pakeplus.qcmpcepc",
+        "productName": "贵闽云茶",
         "directories": {
             "output": "dist"
         },
@@ -55,11 +55,11 @@
                     ]
                 }
             ],
-            "icon": "icon.ico"
+            "icon": "app-icon.ico"
         },
         "mac": {
             "target": "dmg",
-            "icon": "icon.icns"
+            "icon": "app-icon.icns"
         },
         "linux": {
             "target": [

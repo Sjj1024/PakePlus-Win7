@@ -158,7 +158,7 @@ function createMenu() {
 // 当 Electron 完成初始化并准备创建浏览器窗口时调用
 app.whenReady().then(() => {
     createWindow()
-    createMenu()
+    // createMenu()
 
     app.on('activate', () => {
         // 在 macOS 上，当点击 dock 图标并且没有其他窗口打开时，
