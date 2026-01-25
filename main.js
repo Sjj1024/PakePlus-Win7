@@ -12,6 +12,7 @@ function createWindow() {
         height: config.windowHeight,
         minWidth: config.minWidth,
         minHeight: config.minHeight,
+        autoHideMenuBar: true, // 自动隐藏菜单栏
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: false,
