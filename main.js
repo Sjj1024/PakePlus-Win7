@@ -13,6 +13,8 @@ function createWindow() {
         minWidth: config.minWidth,
         minHeight: config.minHeight,
         autoHideMenuBar: true, // 自动隐藏菜单栏
+        title: config.appTitle,
+        titleBarStyle: 'hiddenInset',
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: false,
@@ -30,7 +32,7 @@ function createWindow() {
     // 窗口准备好后显示
     mainWindow.once('ready-to-show', () => {
         mainWindow.show()
-
+        mainWindow.setTitle(config.appTitle)
         // 根据配置决定是否打开开发者工具
         if (config.openDevTools) {
             mainWindow.webContents.openDevTools()
