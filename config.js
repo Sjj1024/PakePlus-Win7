@@ -1,9 +1,7 @@
 module.exports = {
     websiteUrl: 'https://qcmpcepc.gzcj-szh.com/#/',
-    windowWidth: 800,
-    windowHeight: 600,
-    minWidth: 800,
-    minHeight: 600,
+    minWidth: 1600,
+    minHeight: 1000,
     openDevTools: false,
     appTitle: '贵闽云茶',
 }

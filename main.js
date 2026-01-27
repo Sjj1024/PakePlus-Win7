@@ -8,10 +8,8 @@ let mainWindow
 
 function createWindow() {
     mainWindow = new BrowserWindow({
-        width: config.windowWidth,
-        height: config.windowHeight,
-        minWidth: config.minWidth,
-        minHeight: config.minHeight,
+        width: config.minWidth,
+        height: config.minHeight,
         autoHideMenuBar: true, // 自动隐藏菜单栏
         maximizable: true,
         title: config.appTitle,
@@ -33,13 +31,11 @@ function createWindow() {
     // 窗口准备好后显示
     mainWindow.once('ready-to-show', () => {
         mainWindow.show()
-        mainWindow.maximize()
         mainWindow.setTitle(config.appTitle)
         // 根据配置决定是否打开开发者工具
         if (config.openDevTools) {
             mainWindow.webContents.openDevTools()
         }
-        mainWindow.setResizable(false)
     })
 
     // 当窗口被关闭时
